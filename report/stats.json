@@ -1,0 +1,455 @@
+{
+  "summary": {
+    "totalModels": 5,
+    "totalRuns": 28,
+    "timestamp": "2025-11-06T13:21:15.986Z"
+  },
+  "models": {
+    "grok-code-fast-1": {
+      "runs": {
+        "total": 5,
+        "completed": 5,
+        "failed": 0,
+        "successRate": 100
+      },
+      "scores": {
+        "average": 1963,
+        "median": 2040,
+        "min": 1705,
+        "max": 2155,
+        "sum": 9815,
+        "variance": 28906,
+        "standardDeviation": 170.01764614298128,
+        "coefficientOfVariation": 8.661112895719882,
+        "percentiles": {
+          "p25": 1825,
+          "p50": 2040,
+          "p75": 2090,
+          "p90": 2155,
+          "p95": 2155
+        }
+      },
+      "time": {
+        "average": 40.78000000000001,
+        "completedRuns": 5,
+        "standardDeviation": 4.524334205162126
+      },
+      "toolCalls": {
+        "average": 25
+      },
+      "efficiency": {
+        "scorePerToolCall": 78.52,
+        "scorePerSecond": 48.13634134379597
+      },
+      "consistency": {
+        "score": 91.33888710428012,
+        "rank": 0
+      },
+      "bestRun": {
+        "score": 2155,
+        "time": 42.3,
+        "toolCalls": 27
+      },
+      "worstRun": {
+        "score": 1705,
+        "time": 43.6,
+        "toolCalls": 21
+      }
+    },
+    "grok-4-fast-reasoning": {
+      "runs": {
+        "total": 9,
+        "completed": 9,
+        "failed": 0,
+        "successRate": 100
+      },
+      "scores": {
+        "average": 1576.111111111111,
+        "median": 1505,
+        "min": 1285,
+        "max": 1955,
+        "sum": 14185,
+        "variance": 54876.543209876545,
+        "standardDeviation": 234.25742935897796,
+        "coefficientOfVariation": 14.863002215233005,
+        "percentiles": {
+          "p25": 1375,
+          "p50": 1505,
+          "p75": 1800,
+          "p90": 1955,
+          "p95": 1955
+        }
+      },
+      "time": {
+        "average": 29.755555555555556,
+        "completedRuns": 9,
+        "standardDeviation": 4.227190059894295
+      },
+      "toolCalls": {
+        "average": 21
+      },
+      "efficiency": {
+        "scorePerToolCall": 75.05291005291005,
+        "scorePerSecond": 52.96863330843913
+      },
+      "consistency": {
+        "score": 85.13699778476699,
+        "rank": 0
+      },
+      "bestRun": {
+        "score": 1955,
+        "time": 30.1,
+        "toolCalls": 20
+      },
+      "worstRun": {
+        "score": 1285,
+        "time": 29.5,
+        "toolCalls": 19
+      }
+    },
+    "MiniMax-M2": {
+      "runs": {
+        "total": 7,
+        "completed": 4,
+        "failed": 3,
+        "successRate": 57.14285714285714
+      },
+      "scores": {
+        "average": 1605.7142857142858,
+        "median": 1750,
+        "min": 1060,
+        "max": 1905,
+        "sum": 11240,
+        "variance": 83267.3469387755,
+        "standardDeviation": 288.56082017275924,
+        "coefficientOfVariation": 17.970869583712762,
+        "percentiles": {
+          "p25": 1395,
+          "p50": 1750,
+          "p75": 1845,
+          "p90": 1905,
+          "p95": 1905
+        }
+      },
+      "time": {
+        "average": 127.375,
+        "completedRuns": 4,
+        "standardDeviation": 14.549291219849854
+      },
+      "toolCalls": {
+        "average": 30.714285714285715
+      },
+      "efficiency": {
+        "scorePerToolCall": 52.27906976744186,
+        "scorePerSecond": 12.606196551240712
+      },
+      "consistency": {
+        "score": 82.02913041628724,
+        "rank": 0
+      },
+      "bestRun": {
+        "score": 1905,
+        "time": 140.8,
+        "toolCalls": 27
+      },
+      "worstRun": {
+        "score": 1060,
+        "time": 142.8,
+        "toolCalls": 30
+      }
+    },
+    "claude-haiku-4-5": {
+      "runs": {
+        "total": 4,
+        "completed": 4,
+        "failed": 0,
+        "successRate": 100
+      },
+      "scores": {
+        "average": 1956.25,
+        "median": 2050,
+        "min": 1670,
+        "max": 2060,
+        "sum": 7825,
+        "variance": 27342.1875,
+        "standardDeviation": 165.35473231812873,
+        "coefficientOfVariation": 8.452638073770158,
+        "percentiles": {
+          "p25": 2045,
+          "p50": 2050,
+          "p75": 2060,
+          "p90": 2060,
+          "p95": 2060
+        }
+      },
+      "time": {
+        "average": 184.5,
+        "completedRuns": 4,
+        "standardDeviation": 34.940878638065186
+      },
+      "toolCalls": {
+        "average": 24.75
+      },
+      "efficiency": {
+        "scorePerToolCall": 79.04040404040404,
+        "scorePerSecond": 10.602981029810298
+      },
+      "consistency": {
+        "score": 91.54736192622984,
+        "rank": 0
+      },
+      "bestRun": {
+        "score": 2060,
+        "time": 130.6,
+        "toolCalls": 23
+      },
+      "worstRun": {
+        "score": 1670,
+        "time": 182.5,
+        "toolCalls": 24
+      }
+    },
+    "claude-sonnet-4-5": {
+      "runs": {
+        "total": 3,
+        "completed": 3,
+        "failed": 0,
+        "successRate": 100
+      },
+      "scores": {
+        "average": 2143.3333333333335,
+        "median": 2105,
+        "min": 1805,
+        "max": 2520,
+        "sum": 6430,
+        "variance": 85938.88888888889,
+        "standardDeviation": 293.1533538762415,
+        "coefficientOfVariation": 13.677450414132572,
+        "percentiles": {
+          "p25": 1805,
+          "p50": 2105,
+          "p75": 2520,
+          "p90": 2520,
+          "p95": 2520
+        }
+      },
+      "time": {
+        "average": 160.6,
+        "completedRuns": 3,
+        "standardDeviation": 41.03299485373529
+      },
+      "toolCalls": {
+        "average": 23.666666666666668
+      },
+      "efficiency": {
+        "scorePerToolCall": 90.56338028169014,
+        "scorePerSecond": 13.345786633457868
+      },
+      "consistency": {
+        "score": 86.32254958586742,
+        "rank": 0
+      },
+      "bestRun": {
+        "score": 2520,
+        "time": 130,
+        "toolCalls": 22
+      },
+      "worstRun": {
+        "score": 1805,
+        "time": 218.6,
+        "toolCalls": 25
+      }
+    }
+  },
+  "rankings": {
+    "byAverageScore": [
+      {
+        "rank": 1,
+        "model": "claude-sonnet-4-5",
+        "value": 2143.3333333333335,
+        "unit": "points"
+      },
+      {
+        "rank": 2,
+        "model": "grok-code-fast-1",
+        "value": 1963,
+        "unit": "points"
+      },
+      {
+        "rank": 3,
+        "model": "claude-haiku-4-5",
+        "value": 1956.25,
+        "unit": "points"
+      },
+      {
+        "rank": 4,
+        "model": "MiniMax-M2",
+        "value": 1605.7142857142858,
+        "unit": "points"
+      },
+      {
+        "rank": 5,
+        "model": "grok-4-fast-reasoning",
+        "value": 1576.111111111111,
+        "unit": "points"
+      }
+    ],
+    "bySuccessRate": [
+      {
+        "rank": 1,
+        "model": "claude-sonnet-4-5",
+        "value": 100,
+        "unit": "percentage"
+      },
+      {
+        "rank": 2,
+        "model": "grok-code-fast-1",
+        "value": 100,
+        "unit": "percentage"
+      },
+      {
+        "rank": 3,
+        "model": "claude-haiku-4-5",
+        "value": 100,
+        "unit": "percentage"
+      },
+      {
+        "rank": 4,
+        "model": "grok-4-fast-reasoning",
+        "value": 100,
+        "unit": "percentage"
+      },
+      {
+        "rank": 5,
+        "model": "MiniMax-M2",
+        "value": 57.14285714285714,
+        "unit": "percentage"
+      }
+    ],
+    "bySpeed": [
+      {
+        "rank": 1,
+        "model": "grok-4-fast-reasoning",
+        "value": 52.96863330843913,
+        "unit": "points/second"
+      },
+      {
+        "rank": 2,
+        "model": "grok-code-fast-1",
+        "value": 48.13634134379597,
+        "unit": "points/second"
+      },
+      {
+        "rank": 3,
+        "model": "claude-sonnet-4-5",
+        "value": 13.345786633457868,
+        "unit": "points/second"
+      },
+      {
+        "rank": 4,
+        "model": "MiniMax-M2",
+        "value": 12.606196551240712,
+        "unit": "points/second"
+      },
+      {
+        "rank": 5,
+        "model": "claude-haiku-4-5",
+        "value": 10.602981029810298,
+        "unit": "points/second"
+      }
+    ],
+    "byEfficiency": [
+      {
+        "rank": 1,
+        "model": "claude-sonnet-4-5",
+        "value": 90.56338028169014,
+        "unit": "points/tool call"
+      },
+      {
+        "rank": 2,
+        "model": "claude-haiku-4-5",
+        "value": 79.04040404040404,
+        "unit": "points/tool call"
+      },
+      {
+        "rank": 3,
+        "model": "grok-code-fast-1",
+        "value": 78.52,
+        "unit": "points/tool call"
+      },
+      {
+        "rank": 4,
+        "model": "grok-4-fast-reasoning",
+        "value": 75.05291005291005,
+        "unit": "points/tool call"
+      },
+      {
+        "rank": 5,
+        "model": "MiniMax-M2",
+        "value": 52.27906976744186,
+        "unit": "points/tool call"
+      }
+    ],
+    "byConsistency": [
+      {
+        "rank": 1,
+        "model": "claude-haiku-4-5",
+        "value": 91.54736192622984,
+        "unit": "consistency score"
+      },
+      {
+        "rank": 2,
+        "model": "grok-code-fast-1",
+        "value": 91.33888710428012,
+        "unit": "consistency score"
+      },
+      {
+        "rank": 3,
+        "model": "claude-sonnet-4-5",
+        "value": 86.32254958586742,
+        "unit": "consistency score"
+      },
+      {
+        "rank": 4,
+        "model": "grok-4-fast-reasoning",
+        "value": 85.13699778476699,
+        "unit": "consistency score"
+      },
+      {
+        "rank": 5,
+        "model": "MiniMax-M2",
+        "value": 82.02913041628724,
+        "unit": "consistency score"
+      }
+    ]
+  },
+  "recommendations": {
+    "bestOverall": "claude-sonnet-4-5",
+    "fastest": "grok-4-fast-reasoning",
+    "mostEfficient": "claude-sonnet-4-5",
+    "mostReliable": "claude-sonnet-4-5",
+    "mostConsistent": "claude-haiku-4-5",
+    "useCases": {
+      "criticalProduction": {
+        "model": "claude-sonnet-4-5",
+        "reason": "Highest success rate ensures reliable completions",
+        "score": 100
+      },
+      "rapidPrototyping": {
+        "model": "grok-4-fast-reasoning",
+        "reason": "Fastest execution for quick iterations",
+        "score": 52.96863330843913
+      },
+      "toolEfficiency": {
+        "model": "claude-sonnet-4-5",
+        "reason": "Maximizes output per tool call",
+        "score": 90.56338028169014
+      },
+      "consistentPerformance": {
+        "model": "claude-haiku-4-5",
+        "reason": "Most predictable and stable results",
+        "score": 91.54736192622984
+      }
+    }
+  }
+}

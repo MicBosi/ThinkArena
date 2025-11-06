@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Performance Intelligence - Comprehensive Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .slide-container {
+            display: none;
+            min-height: 100vh;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+        }
+
+        .chart-container.large {
+            height: 500px;
+        }
+
+        .insights {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .insights h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .insights ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .insights li {
+            padding: 8px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .insights li:before {
+            content: "→ ";
+            color: #764ba2;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .metric-card h4 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .metric-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .metric-card .label {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-indicator {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .key-findings {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .key-findings h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .key-findings ul {
+            list-style: none;
+        }
+
+        .key-findings li {
+            padding: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .key-findings li:before {
+            content: "★ ";
+            margin-right: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .rank-1 { background: #FFD700; color: #333; }
+        .rank-2 { background: #C0C0C0; color: #333; }
+        .rank-3 { background: #CD7F32; color: white; }
+        .rank-other { background: #e0e0e0; color: #666; }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <div class="slide-container active" id="slide1">
+        <div class="slide">
+            <h1>🚀 LLM Performance Intelligence</h1>
+            <p class="subtitle">Comprehensive Analysis of 5 Leading Language Models</p>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Models Analyzed</h4>
+                    <div class="value">5</div>
+                    <div class="label">LLM Models</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Total Test Runs</h4>
+                    <div class="value">28</div>
+                    <div class="label">Individual Tests</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Key Metrics</h4>
+                    <div class="value">6</div>
+                    <div class="label">Performance Dimensions</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Analysis Depth</h4>
+                    <div class="value">10</div>
+                    <div class="label">Perspectives</div>
+                </div>
+            </div>
+            <div class="insights">
+                <h3>Models Under Analysis</h3>
+                <ul>
+                    <li><strong>grok-code-fast-1</strong> - Fast coding assistant model</li>
+                    <li><strong>grok-4-fast-reasoning</strong> - Grok-4 with fast reasoning mode</li>
+                    <li><strong>MiniMax-M2</strong> - MiniMax's M2 model</li>
+                    <li><strong>claude-haiku-4-5</strong> - Anthropic's lightweight Claude model</li>
+                    <li><strong>claude-sonnet-4-5</strong> - Anthropic's advanced Claude model</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Executive Summary -->
+    <div class="slide-container" id="slide2">
+        <div class="slide">
+            <h2>📊 Executive Summary</h2>
+            <div class="key-findings">
+                <h3>Key Performance Insights</h3>
+                <ul>
+                    <li><strong>Overall Winner:</strong> Claude Sonnet 4.5 leads with highest average score (2143) and 100% success rate</li>
+                    <li><strong>Speed Champion:</strong> Grok-4-Fast-Reasoning achieves 52.97 points/second - fastest execution</li>
+                    <li><strong>Efficiency Leader:</strong> Claude Sonnet 4.5 maximizes score per tool call (90.56 points/call)</li>
+                    <li><strong>Most Consistent:</strong> Claude Haiku 4.5 has highest consistency score (91.55) with 100% completion</li>
+                    <li><strong>Completion Issues:</strong> MiniMax-M2 has only 57% success rate - significant reliability concerns</li>
+                </ul>
+            </div>
+            <div class="chart-container">
+                <canvas id="overallPerformance"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Critical Takeaways</h3>
+                <ul>
+                    <li>Claude Sonnet 4.5 offers the best overall quality AND efficiency for critical tasks</li>
+                    <li>Grok-4-Fast-Reasoning provides unmatched speed (52.97 points/second)</li>
+                    <li>Claude Haiku 4.5 is the most consistent performer (91.55 consistency score)</li>
+                    <li>MiniMax-M2 has significant reliability issues (57% success rate)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Overall Performance Ranking -->
+    <div class="slide-container" id="slide3">
+        <div class="slide">
+            <h2>🏆 Overall Performance Ranking</h2>
+            <div class="chart-container large">
+                <canvas id="performanceRanking"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Performance Analysis</h3>
+                <ul>
+                    <li><strong>Claude Sonnet 4.5:</strong> Clear winner with 2143 avg score (9% above runner-up)</li>
+                    <li><strong>Grok-Code-Fast-1:</strong> Strong second place with 1963 avg score and 100% success</li>
+                    <li><strong>Claude Haiku 4.5:</strong> Third with 1956 avg score, highest consistency (91.55)</li>
+                    <li><strong>Grok-4-Fast-Reasoning:</strong> Moderate scores but fastest execution (52.97 pts/sec)</li>
+                    <li><strong>MiniMax-M2:</strong> Lowest average (1606), only 57% completion rate</li>
+                </ul>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Model</th>
+                        <th>Avg Score</th>
+                        <th>Min Score</th>
+                        <th>Max Score</th>
+                        <th>Std Dev</th>
+                    </tr>
+                </thead>
+                <tbody id="performanceTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 4: Speed vs Quality Analysis -->
+    <div class="slide-container" id="slide4">
+        <div class="slide">
+            <h2>⚡ Speed vs Quality Trade-off</h2>
+            <div class="chart-container large">
+                <canvas id="speedQuality"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Speed-Quality Insights</h3>
+                <ul>
+                    <li><strong>Speed Leader:</strong> Grok-4-Fast-Reasoning achieves 52.97 points/second (fastest)</li>
+                    <li><strong>Speed Runner-up:</strong> Grok-Code-Fast-1 follows at 48.14 points/second</li>
+                    <li><strong>Quality vs Speed Trade-off:</strong> Claude models slower but higher average scores</li>
+                    <li><strong>Time Investment:</strong> Claude models take 4-6x longer but deliver premium quality</li>
+                    <li><strong>Speed Efficiency:</strong> Grok models are 3-4x faster than Claude variants</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Tool Efficiency Analysis -->
+    <div class="slide-container" id="slide5">
+        <div class="slide">
+            <h2>🔧 Tool Usage Efficiency</h2>
+            <div class="chart-container large">
+                <canvas id="toolEfficiency"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Efficiency Champions</h3>
+                <ul>
+                    <li><strong>Claude Sonnet 4.5:</strong> Most efficient - 90.56 points per tool call</li>
+                    <li><strong>Claude Haiku 4.5:</strong> Strong second at 79.04 points per tool call</li>
+                    <li><strong>Grok-Code-Fast-1:</strong> Third at 78.52 points per tool call</li>
+                    <li><strong>Over-Engineers:</strong> MiniMax-M2 uses most tools (30.7 avg) for lowest returns</li>
+                    <li><strong>Efficiency Winner:</strong> Claude models excel at maximizing output per tool call</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Consistency Analysis -->
+    <div class="slide-container" id="slide6">
+        <div class="slide">
+            <h2>📈 Consistency & Reliability</h2>
+            <div class="chart-container large">
+                <canvas id="consistency"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Consistency Insights</h3>
+                <ul>
+                    <li><strong>Most Consistent:</strong> Claude Haiku 4.5 (91.55 consistency score) - most predictable</li>
+                    <li><strong>Second Most Consistent:</strong> Grok-Code-Fast-1 (91.34) - excellent consistency</li>
+                    <li><strong>Quality Consistency:</strong> Claude Sonnet 4.5 (86.32) maintains high scores</li>
+                    <li><strong>Moderate Consistency:</strong> Grok-4-Fast-Reasoning (85.14) shows some variance</li>
+                    <li><strong>Least Consistent:</strong> MiniMax-M2 (82.03) with significant reliability issues</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Completion Success Rates -->
+    <div class="slide-container" id="slide7">
+        <div class="slide">
+            <h2>✅ Completion Success Analysis</h2>
+            <div class="chart-container">
+                <canvas id="completionRates"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Success Rate Insights</h3>
+                <ul>
+                    <li><strong>Perfect Record:</strong> 4 models achieve 100% completion rate (Claude Sonnet, Grok-Code, Grok-4, Claude Haiku)</li>
+                    <li><strong>Completion Issues:</strong> MiniMax-M2 - only 57.14% success rate (4/7 completed)</li>
+                    <li><strong>Reliability Leader:</strong> Claude Sonnet 4.5 combines 100% success with highest scores</li>
+                    <li><strong>Production Ready:</strong> 4 out of 5 models are production-ready with perfect completion</li>
+                    <li><strong>Risk Assessment:</strong> MiniMax-M2 poses significant reliability risk for critical tasks</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Performance Distribution -->
+    <div class="slide-container" id="slide8">
+        <div class="slide">
+            <h2>📊 Performance Distribution Analysis</h2>
+            <div class="chart-container large">
+                <canvas id="distribution"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Distribution Insights</h3>
+                <ul>
+                    <li><strong>Claude Haiku 4.5:</strong> Tight distribution (1670-2060), most predictable outcomes</li>
+                    <li><strong>Claude Sonnet 4.5:</strong> Wide spread (1805-2520) but consistently high performers</li>
+                    <li><strong>Grok-Code-Fast-1:</strong> Narrow range (1705-2155) with excellent consistency</li>
+                    <li><strong>Outliers:</strong> MiniMax-M2 has extreme low scores (1060) from failed tasks</li>
+                    <li><strong>Peak Performance:</strong> Claude Sonnet achieved highest single run (2520 points)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Model Profiles -->
+    <div class="slide-container" id="slide9">
+        <div class="slide">
+            <h2>🎯 Individual Model Profiles</h2>
+            <div class="chart-container">
+                <canvas id="modelProfiles"></canvas>
+            </div>
+            <div class="insights">
+                <h3>Model Personalities</h3>
+                <ul>
+                    <li><strong>Claude Sonnet 4.5:</strong> "The Premium Champion" - Highest scores (2143), best efficiency (90.56), 100% success</li>
+                    <li><strong>Grok-Code-Fast-1:</strong> "The Efficient Sprinter" - Great balance of speed (48.14 pts/sec) and quality (1963)</li>
+                    <li><strong>Claude Haiku 4.5:</strong> "The Consistent Workhorse" - Most predictable (91.55 consistency), 100% reliable</li>
+                    <li><strong>Grok-4-Fast-Reasoning:</strong> "The Speed Demon" - Fastest execution (52.97 pts/sec), 100% completion</li>
+                    <li><strong>MiniMax-M2:</strong> "The Unreliable Wildcard" - High potential but only 57% success rate</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Key Recommendations -->
+    <div class="slide-container" id="slide10">
+        <div class="slide">
+            <h2>💡 Strategic Recommendations</h2>
+            <div class="key-findings">
+                <h3>Choose Your Model Based on Use Case</h3>
+                <ul>
+                    <li><strong>Critical Production Tasks:</strong> Claude Sonnet 4.5 - highest quality (2143), 100% success, best efficiency</li>
+                    <li><strong>Rapid Prototyping:</strong> Grok-4-Fast-Reasoning - fastest execution (52.97 pts/sec), 100% success</li>
+                    <li><strong>Tool-Heavy Workflows:</strong> Claude Sonnet 4.5 - maximum efficiency (90.56 points/tool call)</li>
+                    <li><strong>Predictable Operations:</strong> Claude Haiku 4.5 - most consistent (91.55), 100% completion</li>
+                    <li><strong>High-Speed Tasks:</strong> Grok-Code-Fast-1 - excellent speed (48.14 pts/sec) with high quality</li>
+                </ul>
+            </div>
+            <div class="insights">
+                <h3>Key Performance Metrics Summary</h3>
+                <ul>
+                    <li><strong>Overall Winner:</strong> Claude Sonnet 4.5 (2143 avg score, 100% success, 90.56 efficiency)</li>
+                    <li><strong>Fastest:</strong> Grok-4-Fast-Reasoning (52.97 points/second, 100% success)</li>
+                    <li><strong>Most Efficient:</strong> Claude Sonnet 4.5 (90.56 points per tool call)</li>
+                    <li><strong>Most Consistent:</strong> Claude Haiku 4.5 (91.55 consistency score, 100% completion)</li>
+                    <li><strong>Best Speed-Quality Balance:</strong> Grok-Code-Fast-1 (48.14 pts/sec, 1963 avg score)</li>
+                </ul>
+            </div>
+            <h3 style="margin-top: 30px;">Complete Model Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Avg Score</th>
+                        <th>Success Rate</th>
+                        <th>Speed (pts/sec)</th>
+                        <th>Efficiency</th>
+                        <th>Consistency</th>
+                        <th>Best Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>claude-sonnet-4-5</strong></td>
+                        <td>2143</td>
+                        <td>100%</td>
+                        <td>13.35</td>
+                        <td>90.56</td>
+                        <td>86.32</td>
+                        <td>Critical Production</td>
+                    </tr>
+                    <tr>
+                        <td><strong>grok-code-fast-1</strong></td>
+                        <td>1963</td>
+                        <td>100%</td>
+                        <td>48.14</td>
+                        <td>78.52</td>
+                        <td>91.34</td>
+                        <td>High-Speed Quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>claude-haiku-4-5</strong></td>
+                        <td>1956</td>
+                        <td>100%</td>
+                        <td>10.60</td>
+                        <td>79.04</td>
+                        <td>91.55</td>
+                        <td>Consistent Operations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MiniMax-M2</strong></td>
+                        <td>1606</td>
+                        <td>57%</td>
+                        <td>12.61</td>
+                        <td>52.28</td>
+                        <td>82.03</td>
+                        <td>Not Recommended</td>
+                    </tr>
+                    <tr>
+                        <td><strong>grok-4-fast-reasoning</strong></td>
+                        <td>1576</td>
+                        <td>100%</td>
+                        <td>52.97</td>
+                        <td>75.05</td>
+                        <td>85.14</td>
+                        <td>Rapid Prototyping</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Recommended for Production</h4>
+                    <div class="value">2</div>
+                    <div class="label">Models</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Recommended for Speed</h4>
+                    <div class="value">1</div>
+                    <div class="label">Model</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Recommended for Efficiency</h4>
+                    <div class="value">1</div>
+                    <div class="label">Model</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Recommended for Reliability</h4>
+                    <div class="value">1</div>
+                    <div class="label">Model</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <span class="slide-indicator">
+            <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
+        </span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        // Load actual data from stats.json
+        const stats = {
+            "summary": {
+                "totalModels": 5,
+                "totalRuns": 28,
+                "timestamp": "2025-11-06T12:34:40.097Z"
+            },
+            "models": {
+                "grok-code-fast-1": {
+                    "runs": {
+                        "total": 5,
+                        "completed": 5,
+                        "failed": 0,
+                        "successRate": 100
+                    },
+                    "scores": {
+                        "average": 1963,
+                        "median": 2040,
+                        "min": 1705,
+                        "max": 2155,
+                        "sum": 9815,
+                        "variance": 28906,
+                        "standardDeviation": 170.01764614298128,
+                        "coefficientOfVariation": 8.661112895719882,
+                        "percentiles": {
+                            "p25": 1825,
+                            "p50": 2040,
+                            "p75": 2090,
+                            "p90": 2155,
+                            "p95": 2155
+                        }
+                    },
+                    "time": {
+                        "average": 40.78000000000001,
+                        "completedRuns": 5,
+                        "standardDeviation": 4.524334205162126
+                    },
+                    "toolCalls": {
+                        "average": 25
+                    },
+                    "efficiency": {
+                        "scorePerToolCall": 78.52,
+                        "scorePerSecond": 48.13634134379597
+                    },
+                    "consistency": {
+                        "score": 91.33888710428012,
+                        "rank": 0
+                    },
+                    "bestRun": {
+                        "score": 2155,
+                        "time": 42.3,
+                        "toolCalls": 27
+                    },
+                    "worstRun": {
+                        "score": 1705,
+                        "time": 43.6,
+                        "toolCalls": 21
+                    }
+                },
+                "grok-4-fast-reasoning": {
+                    "runs": {
+                        "total": 9,
+                        "completed": 9,
+                        "failed": 0,
+                        "successRate": 100
+                    },
+                    "scores": {
+                        "average": 1576.111111111111,
+                        "median": 1505,
+                        "min": 1285,
+                        "max": 1955,
+                        "sum": 14185,
+                        "variance": 54876.543209876545,
+                        "standardDeviation": 234.25742935897796,
+                        "coefficientOfVariation": 14.863002215233005,
+                        "percentiles": {
+                            "p25": 1375,
+                            "p50": 1505,
+                            "p75": 1800,
+                            "p90": 1955,
+                            "p95": 1955
+                        }
+                    },
+                    "time": {
+                        "average": 29.755555555555556,
+                        "completedRuns": 9,
+                        "standardDeviation": 4.227190059894295
+                    },
+                    "toolCalls": {
+                        "average": 21
+                    },
+                    "efficiency": {
+                        "scorePerToolCall": 75.05291005291005,
+                        "scorePerSecond": 52.96863330843913
+                    },
+                    "consistency": {
+                        "score": 85.13699778476699,
+                        "rank": 0
+                    },
+                    "bestRun": {
+                        "score": 1955,
+                        "time": 30.1,
+                        "toolCalls": 20
+                    },
+                    "worstRun": {
+                        "score": 1285,
+                        "time": 29.5,
+                        "toolCalls": 19
+                    }
+                },
+                "MiniMax-M2": {
+                    "runs": {
+                        "total": 7,
+                        "completed": 4,
+                        "failed": 3,
+                        "successRate": 57.14285714285714
+                    },
+                    "scores": {
+                        "average": 1605.7142857142858,
+                        "median": 1750,
+                        "min": 1060,
+                        "max": 1905,
+                        "sum": 11240,
+                        "variance": 83267.3469387755,
+                        "standardDeviation": 288.56082017275924,
+                        "coefficientOfVariation": 17.970869583712762,
+                        "percentiles": {
+                            "p25": 1395,
+                            "p50": 1750,
+                            "p75": 1845,
+                            "p90": 1905,
+                            "p95": 1905
+                        }
+                    },
+                    "time": {
+                        "average": 127.375,
+                        "completedRuns": 4,
+                        "standardDeviation": 14.549291219849854
+                    },
+                    "toolCalls": {
+                        "average": 30.714285714285715
+                    },
+                    "efficiency": {
+                        "scorePerToolCall": 52.27906976744186,
+                        "scorePerSecond": 12.606196551240712
+                    },
+                    "consistency": {
+                        "score": 82.02913041628724,
+                        "rank": 0
+                    },
+                    "bestRun": {
+                        "score": 1905,
+                        "time": 140.8,
+                        "toolCalls": 27
+                    },
+                    "worstRun": {
+                        "score": 1060,
+                        "time": 142.8,
+                        "toolCalls": 30
+                    }
+                },
+                "claude-haiku-4-5": {
+                    "runs": {
+                        "total": 4,
+                        "completed": 4,
+                        "failed": 0,
+                        "successRate": 100
+                    },
+                    "scores": {
+                        "average": 1956.25,
+                        "median": 2050,
+                        "min": 1670,
+                        "max": 2060,
+                        "sum": 7825,
+                        "variance": 27342.1875,
+                        "standardDeviation": 165.35473231812873,
+                        "coefficientOfVariation": 8.452638073770158,
+                        "percentiles": {
+                            "p25": 2045,
+                            "p50": 2050,
+                            "p75": 2060,
+                            "p90": 2060,
+                            "p95": 2060
+                        }
+                    },
+                    "time": {
+                        "average": 184.5,
+                        "completedRuns": 4,
+                        "standardDeviation": 34.940878638065186
+                    },
+                    "toolCalls": {
+                        "average": 24.75
+                    },
+                    "efficiency": {
+                        "scorePerToolCall": 79.04040404040404,
+                        "scorePerSecond": 10.602981029810298
+                    },
+                    "consistency": {
+                        "score": 91.54736192622984,
+                        "rank": 0
+                    },
+                    "bestRun": {
+                        "score": 2060,
+                        "time": 130.6,
+                        "toolCalls": 23
+                    },
+                    "worstRun": {
+                        "score": 1670,
+                        "time": 182.5,
+                        "toolCalls": 24
+                    }
+                },
+                "claude-sonnet-4-5": {
+                    "runs": {
+                        "total": 3,
+                        "completed": 3,
+                        "failed": 0,
+                        "successRate": 100
+                    },
+                    "scores": {
+                        "average": 2143.3333333333335,
+                        "median": 2105,
+                        "min": 1805,
+                        "max": 2520,
+                        "sum": 6430,
+                        "variance": 85938.88888888889,
+                        "standardDeviation": 293.1533538762415,
+                        "coefficientOfVariation": 13.677450414132572,
+                        "percentiles": {
+                            "p25": 1805,
+                            "p50": 2105,
+                            "p75": 2520,
+                            "p90": 2520,
+                            "p95": 2520
+                        }
+                    },
+                    "time": {
+                        "average": 160.6,
+                        "completedRuns": 3,
+                        "standardDeviation": 41.03299485373529
+                    },
+                    "toolCalls": {
+                        "average": 23.666666666666668
+                    },
+                    "efficiency": {
+                        "scorePerToolCall": 90.56338028169014,
+                        "scorePerSecond": 13.345786633457868
+                    },
+                    "consistency": {
+                        "score": 86.32254958586742,
+                        "rank": 0
+                    },
+                    "bestRun": {
+                        "score": 2520,
+                        "time": 130,
+                        "toolCalls": 22
+                    },
+                    "worstRun": {
+                        "score": 1805,
+                        "time": 218.6,
+                        "toolCalls": 25
+                    }
+                }
+            }
+        };
+
+        const metrics = stats.models;
+        const modelNames = Object.keys(metrics);
+        const colorMap = {
+            'grok-code-fast-1': '#667eea',
+            'grok-4-fast-reasoning': '#764ba2',
+            'MiniMax-M2': '#f093fb',
+            'claude-haiku-4-5': '#4facfe',
+            'claude-sonnet-4-5': '#43e97b'
+        };
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b'];
+
+        // Chart configurations
+        Chart.defaults.font.size = 14;
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        // Slide navigation
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide-container');
+            slides[currentSlide - 1].classList.remove('active');
+            
+            currentSlide += direction;
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize charts
+        window.addEventListener('load', () => {
+            // Overall Performance (sorted by score)
+            const sortedByScore = [...modelNames].sort((a, b) => metrics[b].scores.average - metrics[a].scores.average);
+            new Chart(document.getElementById('overallPerformance'), {
+                type: 'bar',
+                data: {
+                    labels: sortedByScore,
+                    datasets: [{
+                        label: 'Average Score',
+                        data: sortedByScore.map(m => metrics[m].scores.average),
+                        backgroundColor: colors,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Average Performance Score by Model (Sorted)', font: { size: 18 } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Score' } }
+                    }
+                }
+            });
+
+            // Performance Ranking Table
+            const sortedModels = [...modelNames].sort((a, b) => metrics[b].scores.average - metrics[a].scores.average);
+            const tableBody = document.getElementById('performanceTableBody');
+            sortedModels.forEach((model, idx) => {
+                const rankClass = idx === 0 ? 'rank-1' : idx === 1 ? 'rank-2' : idx === 2 ? 'rank-3' : 'rank-other';
+                tableBody.innerHTML += `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${idx + 1}</span></td>
+                        <td>${model}</td>
+                        <td>${metrics[model].scores.average.toFixed(0)}</td>
+                        <td>${metrics[model].scores.min}</td>
+                        <td>${metrics[model].scores.max}</td>
+                        <td>${metrics[model].scores.standardDeviation.toFixed(0)}</td>
+                    </tr>
+                `;
+            });
+
+            new Chart(document.getElementById('performanceRanking'), {
+                type: 'bar',
+                data: {
+                    labels: sortedModels,
+                    datasets: [{
+                        label: 'Average Score',
+                        data: sortedModels.map(m => metrics[m].scores.average),
+                        backgroundColor: colors,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Performance Ranking (Horizontal Bar Chart)', font: { size: 18 } }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: 'Average Score' } }
+                    }
+                }
+            });
+
+            // Speed vs Quality
+            new Chart(document.getElementById('speedQuality'), {
+                type: 'bubble',
+                data: {
+                    datasets: modelNames.map((model, i) => ({
+                        label: model,
+                        data: [{
+                            x: metrics[model].time.average,
+                            y: metrics[model].scores.average,
+                            r: metrics[model].toolCalls.average / 2  // Scale tool calls for bubble size
+                        }],
+                        backgroundColor: colorMap[model] + '80',
+                        borderColor: colorMap[model],
+                        borderWidth: 2
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Speed vs Quality Analysis (Bubble size = tool calls)', font: { size: 18 } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return [
+                                        `${context.dataset.label}`,
+                                        `Time: ${context.parsed.x.toFixed(1)}s`,
+                                        `Score: ${context.parsed.y.toFixed(0)}`,
+                                        `Tool Calls: ${(context.raw.r * 2).toFixed(0)}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Average Time (seconds)' } },
+                        y: { title: { display: true, text: 'Average Score' } }
+                    }
+                }
+            });
+
+            // Tool Efficiency (sorted by efficiency)
+            const sortedByEfficiency = [...modelNames].sort((a, b) => metrics[b].efficiency.scorePerToolCall - metrics[a].efficiency.scorePerToolCall);
+            new Chart(document.getElementById('toolEfficiency'), {
+                type: 'bar',
+                data: {
+                    labels: sortedByEfficiency,
+                    datasets: [
+                        {
+                            label: 'Score per Tool Call',
+                            data: sortedByEfficiency.map(m => metrics[m].efficiency.scorePerToolCall),
+                            backgroundColor: colors,
+                            yAxisID: 'y',
+                            borderRadius: 8
+                        },
+                        {
+                            label: 'Total Tool Calls',
+                            data: sortedByEfficiency.map(m => metrics[m].toolCalls.average),
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            yAxisID: 'y1',
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Tool Efficiency Analysis (Sorted by Efficiency)', font: { size: 18 } }
+                    },
+                    scales: {
+                        y: { 
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Score per Tool Call' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Average Tool Calls' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+
+            // Consistency (sorted by consistency score)
+            const sortedByConsistency = [...modelNames].sort((a, b) => metrics[b].consistency.score - metrics[a].consistency.score);
+            new Chart(document.getElementById('consistency'), {
+                type: 'bar',
+                data: {
+                    labels: sortedByConsistency,
+                    datasets: [
+                        {
+                            label: 'Consistency Score (Higher is Better)',
+                            data: sortedByConsistency.map(m => metrics[m].consistency.score),
+                            backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Consistency Analysis (Sorted, Higher = More Consistent)', font: { size: 18 } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Consistency Score' } }
+                    }
+                }
+            });
+
+            // Completion Rates (sorted by success rate)
+            const sortedBySuccess = [...modelNames].sort((a, b) => metrics[b].runs.successRate - metrics[a].runs.successRate);
+            new Chart(document.getElementById('completionRates'), {
+                type: 'bar',
+                data: {
+                    labels: sortedBySuccess,
+                    datasets: [
+                        {
+                            label: 'Success Rate (%)',
+                            data: sortedBySuccess.map(m => metrics[m].runs.successRate),
+                            backgroundColor: colors,
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Completion Success Rates (Sorted)', font: { size: 18 } }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'Success Rate (%)' }
+                        }
+                    }
+                }
+            });
+
+            // Distribution (sorted by average score for consistency)
+            const sortedByScoreForDist = [...modelNames].sort((a, b) => metrics[b].scores.average - metrics[a].scores.average);
+            new Chart(document.getElementById('distribution'), {
+                type: 'bar',
+                data: {
+                    labels: sortedByScoreForDist,
+                    datasets: [
+                        {
+                            label: 'Min Score',
+                            data: sortedByScoreForDist.map(model => metrics[model].scores.min),
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Average Score',
+                            data: sortedByScoreForDist.map(model => metrics[model].scores.average),
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Max Score',
+                            data: sortedByScoreForDist.map(model => metrics[model].scores.max),
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Score Distribution - Min, Average, Max Performance (Sorted by Average)', font: { size: 18 } }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Model' }
+                        },
+                        y: { beginAtZero: true, title: { display: true, text: 'Score' } }
+                    }
+                }
+            });
+
+            // Model Profiles (Radar)
+            new Chart(document.getElementById('modelProfiles'), {
+                type: 'radar',
+                data: {
+                    labels: ['Avg Score', 'Speed (pts/sec)', 'Efficiency', 'Success Rate', 'Consistency'],
+                    datasets: modelNames.map((model, i) => {
+                        // Normalize values for radar chart (0-100 scale)
+                        const normScore = (metrics[model].scores.average / 2600) * 100;
+                        const normSpeed = (metrics[model].efficiency.scorePerSecond / 60) * 100;
+                        const normEfficiency = (metrics[model].efficiency.scorePerToolCall / 100) * 100;
+                        const normSuccess = metrics[model].runs.successRate;
+                        const normConsistency = metrics[model].consistency.score;
+                        
+                        return {
+                            label: model,
+                            data: [normScore, normSpeed, normEfficiency, normSuccess, normConsistency],
+                            backgroundColor: colorMap[model] + '40',
+                            borderColor: colorMap[model],
+                            pointBackgroundColor: colorMap[model],
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: colorMap[model]
+                        };
+                    })
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Multi-Dimensional Model Profiles (Radar Chart)', font: { size: 18 } }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('totalSlides').textContent = totalSlides;
+            document.getElementById('prevBtn').disabled = true;
+        });
+    </script>
+</body>
+</html>
+l>
+html>

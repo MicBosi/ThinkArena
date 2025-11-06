@@ -1,66 +1,236 @@
 {
-  "xai": [
+  "grok-code-fast-1": [
     {
-      "steps": 6,
-      "score": 1455,
-      "time": 55.2,
+      "steps": 10,
+      "score": 1705,
+      "time": 43.6,
       "completed": true,
-      "timestamp": "2025-11-06T02:01:11.259Z"
+      "toolCalls": 21,
+      "timestamp": "2025-11-06T11:29:38.758Z"
     },
     {
-      "steps": 5,
-      "score": 1345,
-      "time": 23.7,
+      "steps": 12,
+      "score": 2090,
+      "time": 33.3,
       "completed": true,
-      "timestamp": "2025-11-06T02:09:20.895Z"
+      "toolCalls": 28,
+      "timestamp": "2025-11-06T11:30:26.373Z"
+    },
+    {
+      "steps": 18,
+      "score": 1825,
+      "time": 38.4,
+      "completed": true,
+      "toolCalls": 28,
+      "timestamp": "2025-11-06T11:31:12.368Z"
+    },
+    {
+      "steps": 12,
+      "score": 2155,
+      "time": 42.3,
+      "completed": true,
+      "toolCalls": 27,
+      "timestamp": "2025-11-06T11:32:06.430Z"
+    },
+    {
+      "steps": 22,
+      "score": 2040,
+      "time": 46.3,
+      "completed": true,
+      "toolCalls": 21,
+      "timestamp": "2025-11-06T11:33:04.653Z"
+    }
+  ],
+  "grok-4-fast-reasoning": [
+    {
+      "steps": 16,
+      "score": 1505,
+      "time": 29.6,
+      "completed": true,
+      "toolCalls": 22,
+      "timestamp": "2025-11-06T11:55:57.486Z"
+    },
+    {
+      "steps": 13,
+      "score": 1800,
+      "time": 27.2,
+      "completed": true,
+      "toolCalls": 21,
+      "timestamp": "2025-11-06T11:57:05.123Z"
     },
     {
       "steps": 14,
-      "score": 1405,
-      "time": 35,
+      "score": 1375,
+      "time": 24.4,
       "completed": true,
-      "timestamp": "2025-11-06T02:10:07.354Z"
+      "toolCalls": 18,
+      "timestamp": "2025-11-06T11:58:13.594Z"
     },
     {
-      "steps": 10,
-      "score": 1440,
-      "time": 45.9,
+      "steps": 15,
+      "score": 1855,
+      "time": 30.3,
       "completed": true,
-      "timestamp": "2025-11-06T02:21:59.694Z"
-    }
-  ],
-  "orHaiku": [
-    {
-      "steps": 20,
-      "score": 1500,
-      "time": 80.3,
-      "completed": true,
-      "timestamp": "2025-11-06T02:01:54.462Z"
-    }
-  ],
-  "m2": [
-    {
-      "steps": 20,
-      "score": 755,
-      "time": 97.7,
-      "completed": false,
-      "timestamp": "2025-11-06T02:05:56.508Z"
+      "toolCalls": 23,
+      "timestamp": "2025-11-06T11:59:29.719Z"
     },
     {
       "steps": 17,
-      "score": 1335,
-      "time": 87.2,
+      "score": 1955,
+      "time": 30.1,
       "completed": true,
-      "timestamp": "2025-11-06T02:13:31.124Z"
+      "toolCalls": 20,
+      "timestamp": "2025-11-06T12:00:14.999Z"
+    },
+    {
+      "steps": 15,
+      "score": 1285,
+      "time": 29.5,
+      "completed": true,
+      "toolCalls": 19,
+      "timestamp": "2025-11-06T12:01:20.216Z"
+    },
+    {
+      "steps": 14,
+      "score": 1450,
+      "time": 23.8,
+      "completed": true,
+      "toolCalls": 20,
+      "timestamp": "2025-11-06T12:02:10.351Z"
+    },
+    {
+      "steps": 17,
+      "score": 1650,
+      "time": 36.5,
+      "completed": true,
+      "toolCalls": 27,
+      "timestamp": "2025-11-06T12:03:21.940Z"
+    },
+    {
+      "steps": 18,
+      "score": 1310,
+      "time": 36.4,
+      "completed": true,
+      "toolCalls": 19,
+      "timestamp": "2025-11-06T12:04:03.750Z"
     }
   ],
-  "orM2": [
+  "MiniMax-M2": [
+    {
+      "steps": 26,
+      "score": 1830,
+      "time": 113.3,
+      "completed": true,
+      "toolCalls": 35,
+      "timestamp": "2025-11-06T11:35:17.009Z"
+    },
+    {
+      "steps": 30,
+      "score": 1060,
+      "time": 142.8,
+      "completed": false,
+      "toolCalls": 30,
+      "timestamp": "2025-11-06T11:35:25.692Z"
+    },
+    {
+      "steps": 21,
+      "score": 1845,
+      "time": 112.4,
+      "completed": true,
+      "toolCalls": 31,
+      "timestamp": "2025-11-06T11:35:34.919Z"
+    },
+    {
+      "steps": 30,
+      "score": 1395,
+      "time": 180.7,
+      "completed": false,
+      "toolCalls": 33,
+      "timestamp": "2025-11-06T11:36:45.476Z"
+    },
+    {
+      "steps": 30,
+      "score": 1455,
+      "time": 120.7,
+      "completed": false,
+      "toolCalls": 30,
+      "timestamp": "2025-11-06T11:38:09.971Z"
+    },
+    {
+      "steps": 28,
+      "score": 1750,
+      "time": 143,
+      "completed": true,
+      "toolCalls": 29,
+      "timestamp": "2025-11-06T11:38:37.268Z"
+    },
+    {
+      "steps": 25,
+      "score": 1905,
+      "time": 140.8,
+      "completed": true,
+      "toolCalls": 27,
+      "timestamp": "2025-11-06T12:05:56.151Z"
+    }
+  ],
+  "claude-haiku-4-5": [
     {
       "steps": 20,
-      "score": 810,
-      "time": 121.1,
-      "completed": false,
-      "timestamp": "2025-11-06T02:09:36.867Z"
+      "score": 1670,
+      "time": 182.5,
+      "completed": true,
+      "toolCalls": 24,
+      "timestamp": "2025-11-06T11:49:14.776Z"
+    },
+    {
+      "steps": 26,
+      "score": 2045,
+      "time": 226.8,
+      "completed": true,
+      "toolCalls": 27,
+      "timestamp": "2025-11-06T11:50:09.945Z"
+    },
+    {
+      "steps": 18,
+      "score": 2050,
+      "time": 198.1,
+      "completed": true,
+      "toolCalls": 25,
+      "timestamp": "2025-11-06T11:50:20.089Z"
+    },
+    {
+      "steps": 16,
+      "score": 2060,
+      "time": 130.6,
+      "completed": true,
+      "toolCalls": 23,
+      "timestamp": "2025-11-06T11:53:21.592Z"
+    }
+  ],
+  "claude-sonnet-4-5": [
+    {
+      "steps": 15,
+      "score": 2105,
+      "time": 133.2,
+      "completed": true,
+      "toolCalls": 24,
+      "timestamp": "2025-11-06T11:58:25.356Z"
+    },
+    {
+      "steps": 15,
+      "score": 2520,
+      "time": 130,
+      "completed": true,
+      "toolCalls": 22,
+      "timestamp": "2025-11-06T12:01:02.822Z"
+    },
+    {
+      "steps": 19,
+      "score": 1805,
+      "time": 218.6,
+      "completed": true,
+      "toolCalls": 25,
+      "timestamp": "2025-11-06T12:12:39.905Z"
     }
   ]
 }
