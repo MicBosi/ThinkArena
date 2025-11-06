@@ -1,0 +1,48 @@
+{
+  "name": "think-arena",
+  "version": "1.0.0",
+  "description": "Uses games to demo interleaved AI thinking of various models.",
+  "type": "module",
+  "main": "dist/play.js",
+  "types": "dist/play.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json --noEmitOnError false || true",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build",
+    "start": "tsx src/play.ts decoder --xai",
+    "play:xai": "tsx src/play.ts decoder --xai",
+    "play:m2": "tsx src/play.ts decoder --m2",
+    "play:haiku": "tsx src/play.ts decoder --haiku",
+    "play:sonnet": "tsx src/play.ts decoder --sonnet",
+    "play:or-m2": "tsx src/play.ts decoder --or-m2",
+    "play:or-haiku": "tsx src/play.ts decoder --or-haiku",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "check": "npm run type-check && npm run lint && npm run format:check"
+  },
+  "author": "Michele Bosi",
+  "license": "MIT",
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.41",
+    "@ai-sdk/xai": "^2.0.31",
+    "@openrouter/ai-sdk-provider": "^1.2.0",
+    "ai": "^5.0.87",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
+  }
+}

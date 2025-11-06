@@ -1,0 +1,59 @@
+{
+  "xai": [
+    {
+      "steps": 6,
+      "score": 1455,
+      "time": 55.2,
+      "completed": true,
+      "timestamp": "2025-11-06T02:01:11.259Z"
+    },
+    {
+      "steps": 5,
+      "score": 1345,
+      "time": 23.7,
+      "completed": true,
+      "timestamp": "2025-11-06T02:09:20.895Z"
+    },
+    {
+      "steps": 14,
+      "score": 1405,
+      "time": 35,
+      "completed": true,
+      "timestamp": "2025-11-06T02:10:07.354Z"
+    }
+  ],
+  "orHaiku": [
+    {
+      "steps": 20,
+      "score": 1500,
+      "time": 80.3,
+      "completed": true,
+      "timestamp": "2025-11-06T02:01:54.462Z"
+    }
+  ],
+  "m2": [
+    {
+      "steps": 20,
+      "score": 755,
+      "time": 97.7,
+      "completed": false,
+      "timestamp": "2025-11-06T02:05:56.508Z"
+    },
+    {
+      "steps": 17,
+      "score": 1335,
+      "time": 87.2,
+      "completed": true,
+      "timestamp": "2025-11-06T02:13:31.124Z"
+    }
+  ],
+  "orM2": [
+    {
+      "steps": 20,
+      "score": 810,
+      "time": 121.1,
+      "completed": false,
+      "timestamp": "2025-11-06T02:09:36.867Z"
+    }
+  ]
+}
