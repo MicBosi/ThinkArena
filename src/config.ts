@@ -74,6 +74,25 @@ export const MODEL_CONFIG: ModelConfigMap = {
         },
     },
 
+    // OpenRouter MiniMax models
+    orKk2: {
+        default: 'moonshotai/kimi-k2-thinking', // MiniMax M2 model with reasoning support
+        apiKeyEnv: 'OPENROUTER_API_KEY',
+        config: {
+            reasoning: {
+                effort: 'high',
+                exclude: true, // OpenRouter breaks both MiniMax M2 and Claude/Haiku if reasoning is returned and sent back to the model
+            },
+            provider: {
+                order: [
+                    // 'fireworks',
+                    'minimax',
+                ],
+                allow_fallbacks: true,
+            },
+        },
+    },
+
     // OpenRouter Claude Haiku models
     orHaiku: {
         default: 'anthropic/claude-haiku-4.5',
@@ -150,7 +169,7 @@ export function createModel(): LanguageModelV2 {
     }
 
     // Lazy initialization
-    if (currentProvider === 'orM2' || currentProvider === 'orHaiku') {
+    if (['orM2', 'orHaiku', 'orKk2'].includes(currentProvider)) {
         // Uses OPENROUTER_API_KEY from env
         const openrouterInstance = createOpenRouter({});
         return openrouterInstance.chat(providerConfig.default);
@@ -187,7 +206,7 @@ export function getProviderOptions(budgetTokens = THINKING_BUDGETS.standard) {
         return { xai: { parallel_function_calling: true } };
     }
 
-    if (currentProvider === 'orM2' || currentProvider === 'orHaiku') {
+    if (['orM2', 'orHaiku', 'orKk2'].includes(currentProvider)) {
         // OpenRouter options - pass config from MODEL_CONFIG
         const providerConfig = MODEL_CONFIG[currentProvider];
         if (providerConfig?.config) {
@@ -214,7 +233,7 @@ export function getProviderOptions(budgetTokens = THINKING_BUDGETS.standard) {
  * @returns {object|undefined} Extra body object with reasoning settings, or undefined
  */
 export function getExtraBody() {
-    if (currentProvider === 'orM2' || currentProvider === 'orHaiku') {
+    if (['orM2', 'orHaiku', 'orKk2'].includes(currentProvider)) {
         // OpenRouter reasoning configuration - note: exclude: true means reasoning is performed but excluded from the response
         // Related Issue: https://github.com/OpenRouterTeam/ai-sdk-provider/issues/177
         return {
@@ -288,6 +307,10 @@ export function displayConfig(): void {
         console.log(`Model: ${config.default}`);
         console.log(`API Key: ${process.env[config.apiKeyEnv] ? '✓ Loaded from ~/.env' : '✗ NOT FOUND'}`);
     } else if (currentProvider === 'orHaiku') {
+        console.log('Provider: OpenRouter');
+        console.log(`Model: ${config.default}`);
+        console.log(`API Key: ${process.env[config.apiKeyEnv] ? '✓ Loaded from ~/.env' : '✗ NOT FOUND'}`);
+    } else if (currentProvider === 'orKk2') {
         console.log('Provider: OpenRouter');
         console.log(`Model: ${config.default}`);
         console.log(`API Key: ${process.env[config.apiKeyEnv] ? '✓ Loaded from ~/.env' : '✗ NOT FOUND'}`);

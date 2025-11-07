@@ -379,16 +379,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         .option('--sonnet', 'use Claude Sonnet 4.5')
         .option('--xai', 'use xAI Grok (grok-code-fast-1)')
         .option('--or-m2', 'use OpenRouter MiniMax M2')
+        .option('--or-kk2', 'use OpenRouter Kimi K2 Thinking')
         .option('--or-haiku', 'use OpenRouter Claude Haiku 4.5')
         .option('--m2', 'use MiniMax M2 via Anthropic-compatible API')
         .action(async (gameName: string, options: any) => {
             // Validate that exactly one provider option is selected
-            const providerOptions = ['haiku', 'sonnet', 'xai', 'orM2', 'orHaiku', 'm2'];
+            const providerOptions = ['haiku', 'sonnet', 'xai', 'orM2', 'orHaiku', 'orKk2', 'm2'];
             const selectedProviders = providerOptions.filter((option) => options[option]);
 
             if (selectedProviders.length !== 1) {
                 console.error(
-                    '\n❌ ERROR: You must specify exactly one model provider using one of: --haiku, --sonnet, --xai, --or-m2, --or-haiku, --m2'
+                    '\n❌ ERROR: You must specify exactly one model provider using one of: --haiku, --sonnet, --xai, --or-m2, --or-kk2, --or-haiku, --m2'
                 );
                 program.help();
                 return;
@@ -400,6 +401,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
                 sonnet: 'sonnet',
                 xai: 'xai',
                 orM2: 'orM2',
+                orKk2: 'orKk2',
                 orHaiku: 'orHaiku',
                 m2: 'm2',
             };

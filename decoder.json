@@ -113,6 +113,14 @@
       "completed": true,
       "toolCalls": 19,
       "timestamp": "2025-11-06T12:04:03.750Z"
+    },
+    {
+      "steps": 16,
+      "score": 1740,
+      "time": 37.5,
+      "completed": true,
+      "toolCalls": 28,
+      "timestamp": "2025-11-06T18:06:52.803Z"
     }
   ],
   "MiniMax-M2": [
