@@ -10,17 +10,11 @@ import { GameDefinition } from './interfaces.js';
 
 // Import all game definitions
 import { travelGame } from './game-travel.js';
-// import { mysteryGame } from './game-mystery.js';
-// import { escapeGame } from './game-escape.js';
-// import { treasureGame } from './game-treasure.js';
 import { decoderGame } from './game-decoder.js';
 
 // Game registry
 const GAMES: Record<string, GameDefinition> = {
     travel: travelGame,
-    //   mystery: mysteryGame as GameDefinition,
-    //   escape: escapeGame as GameDefinition,
-    //   treasure: treasureGame as GameDefinition,
     decoder: decoderGame as GameDefinition,
 };
 
@@ -302,7 +296,9 @@ async function playGame(
     }
 }
 
-// CLI Entry Point
+/**
+ * CLI Entry Point / Module Execution Guard
+ */
 if (import.meta.url === `file://${process.argv[1]}`) {
     const program = new Command();
 

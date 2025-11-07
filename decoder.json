@@ -385,6 +385,14 @@
       "completed": true,
       "toolCalls": 21,
       "timestamp": "2025-11-07T15:14:11.475Z"
+    },
+    {
+      "steps": 28,
+      "score": 1430,
+      "time": 579.2,
+      "completed": true,
+      "toolCalls": 32,
+      "timestamp": "2025-11-07T15:56:00.256Z"
     }
   ],
   "minimax/minimax-m2": [
