@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Signal Decoder - World Map Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4da6ff;
+            text-shadow: 0 0 10px rgba(77, 166, 255, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            background: rgba(20, 30, 60, 0.8);
+            border: 2px solid #4da6ff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.2);
+        }
+
+        .section h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+            border-bottom: 2px solid #4da6ff;
+            padding-bottom: 10px;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: rgba(10, 14, 39, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .legend {
+            background: rgba(20, 30, 60, 0.8);
+            border: 2px solid #4da6ff;
+            border-radius: 12px;
+            padding: 25px;
+            grid-column: 1 / -1;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.2);
+        }
+
+        .legend h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+            border-bottom: 2px solid #4da6ff;
+            padding-bottom: 10px;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .legend-item {
+            background: rgba(40, 50, 80, 0.6);
+            border-left: 4px solid #4da6ff;
+            padding: 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .legend-item:hover {
+            background: rgba(60, 80, 120, 0.8);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(77, 166, 255, 0.3);
+        }
+
+        .item-name {
+            color: #4da6ff;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .item-type {
+            color: #90ee90;
+            font-size: 12px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .item-value {
+            color: #ffd700;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .item-hint {
+            color: #b0b0b0;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .item-aids {
+            color: #87ceeb;
+            font-size: 11px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(135, 206, 235, 0.3);
+        }
+
+        .area-info {
+            background: rgba(20, 30, 60, 0.8);
+            border: 2px solid #4da6ff;
+            border-radius: 12px;
+            padding: 25px;
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.2);
+        }
+
+        .area-info h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+            border-bottom: 2px solid #4da6ff;
+            padding-bottom: 10px;
+        }
+
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .area-card {
+            background: rgba(40, 50, 80, 0.6);
+            border: 2px solid #87ceeb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .area-name {
+            color: #4da6ff;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .area-risk {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .risk-low {
+            background: #228b22;
+        }
+
+        .risk-medium {
+            background: #ff8c00;
+        }
+
+        .risk-high {
+            background: #dc143c;
+        }
+
+        .risk-very-high {
+            background: #8b0000;
+        }
+
+        .area-desc {
+            color: #b0b0b0;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .area-section {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .area-label {
+            color: #87ceeb;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .area-items {
+            color: #e0e0e0;
+            margin-top: 3px;
+            margin-left: 10px;
+        }
+
+        .signal-list {
+            color: #ffd700;
+            margin-top: 3px;
+            margin-left: 10px;
+            font-size: 11px;
+        }
+
+        .stats {
+            background: rgba(20, 30, 60, 0.8);
+            border: 2px solid #4da6ff;
+            border-radius: 12px;
+            padding: 25px;
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.2);
+        }
+
+        .stats h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+            border-bottom: 2px solid #4da6ff;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(40, 50, 80, 0.6);
+            border-left: 4px solid #4da6ff;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .stat-label {
+            color: #87ceeb;
+            font-size: 12px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .signal-combinations {
+            background: rgba(20, 30, 60, 0.8);
+            border: 2px solid #4da6ff;
+            border-radius: 12px;
+            padding: 25px;
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(77, 166, 255, 0.2);
+        }
+
+        .signal-combinations h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+            border-bottom: 2px solid #4da6ff;
+            padding-bottom: 10px;
+        }
+
+        .combinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .combination-card {
+            background: rgba(40, 50, 80, 0.6);
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .combination-title {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .combination-signals {
+            color: #87ceeb;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .combination-points {
+            color: #90ee90;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛸 Alien Signal Decoder - World Map & Item Guide</h1>
+        <p class="subtitle">Strategic visualization of the game world, locations, and collectible items</p>
+
+        <div class="content">
+            <div class="section">
+                <h2>🗺️ World Map</h2>
+                <div class="mermaid">
+                    graph TD
+                        LZ["🔷 Landing Zone<br/>(Low Risk)<br/>START"]
+                        VP["🌋 Volcanic Plains<br/>(Medium Risk)"]
+                        CF["✨ Crystal Forest<br/>(Low Risk)"]
+                        UC["🕳️ Underground Caverns<br/>(High Risk)"]
+                        HL["💧 Hidden Lake<br/>(Medium Risk)"]
+                        AR["🏛️ Ancient Ruins<br/>(Medium Risk)"]
+                        SS["⚡ Signal Source<br/>(Very High Risk)<br/>GOAL"]
+
+                        LZ -->|1-2 energy| VP
+                        LZ -->|1-2 energy| CF
+                        VP -->|1-3 energy| UC
+                        VP -->|2 energy| AR
+                        CF -->|1-2 energy| HL
+                        CF -->|2 energy| AR
+                        UC -->|3-4 energy| SS
+                        HL -->|3-4 energy| SS
+
+                        style LZ fill:#228b22,stroke:#4da6ff,stroke-width:3px,color:#fff
+                        style VP fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style CF fill:#228b22,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style UC fill:#dc143c,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style HL fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style AR fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style SS fill:#8b0000,stroke:#ffd700,stroke-width:3px,color:#fff
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 Resource Distribution</h2>
+                <div class="mermaid">
+                    graph LR
+                        LZ["Landing Zone<br/>2 items<br/>1 signal"]
+                        VP["Volcanic Plains<br/>2 items<br/>1 signal"]
+                        CF["Crystal Forest<br/>2 items<br/>1 signal"]
+                        UC["Underground<br/>2 items<br/>1 signal"]
+                        HL["Hidden Lake<br/>2 items<br/>1 signal"]
+                        AR["Ancient Ruins<br/>2 items<br/>1 signal"]
+                        SS["Signal Source<br/>1 item<br/>1 signal"]
+
+                        LZ -.->|14 total items| COUNT["📦 Total: 14 Artifacts"]
+                        VP -.-> COUNT
+                        CF -.-> COUNT
+                        UC -.-> COUNT
+                        HL -.-> COUNT
+                        AR -.-> COUNT
+                        SS -.-> COUNT
+
+                        style LZ fill:#228b22,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style VP fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style CF fill:#228b22,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style UC fill:#dc143c,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style HL fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style AR fill:#ff8c00,stroke:#4da6ff,stroke-width:2px,color:#fff
+                        style SS fill:#8b0000,stroke:#ffd700,stroke-width:2px,color:#fff
+                        style COUNT fill:#4da6ff,stroke:#ffd700,stroke-width:3px,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <h2>📊 Game Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Areas</div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Artifacts</div>
+                    <div class="stat-value">14</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Signals</div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Signal Combinations</div>
+                    <div class="stat-value">6</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Starting Energy</div>
+                    <div class="stat-value">30</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Max Steps</div>
+                    <div class="stat-value">30</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="area-info">
+            <h2>🔍 Detailed Area Information</h2>
+            <div class="areas-grid">
+                <div class="area-card">
+                    <div class="area-name">🔷 Landing Zone</div>
+                    <span class="area-risk risk-low">Low Risk</span>
+                    <div class="area-desc">Your starting point with basic equipment and faint signal readings.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Volcanic Plains (1-2 energy)<br/>→ Crystal Forest (1-2 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• signal_scanner (20 pts)<br/>• energy_crystal (15 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: basic_frequency (Alpha waves)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">🌋 Volcanic Plains</div>
+                    <span class="area-risk risk-medium">Medium Risk</span>
+                    <div class="area-desc">Hot, rocky terrain with geothermal activity and strong interference.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Landing Zone (1-2 energy)<br/>→ Underground Caverns (1-3 energy)<br/>→ Ancient Ruins (2 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• heat_resistant_probe (30 pts)<br/>• lava_sample (25 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: interference_pattern (Beta spikes)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">✨ Crystal Forest</div>
+                    <span class="area-risk risk-low">Low Risk</span>
+                    <div class="area-desc">Dense forest of glowing crystals emitting harmonic vibrations.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Landing Zone (1-2 energy)<br/>→ Hidden Lake (1-2 energy)<br/>→ Ancient Ruins (2 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• vibration_analyzer (35 pts)<br/>• crystal_shard (20 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: harmonic_sequence (Gamma harmonics)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">🕳️ Underground Caverns</div>
+                    <span class="area-risk risk-high">High Risk</span>
+                    <div class="area-desc">Dark caves with echoing sounds and hidden chambers.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Volcanic Plains (1-3 energy)<br/>→ Signal Source (3-4 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• echo_locator (40 pts)<br/>• fossil_remnant (30 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: echo_code (Delta echoes)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">💧 Hidden Lake</div>
+                    <span class="area-risk risk-medium">Medium Risk</span>
+                    <div class="area-desc">Serene lake with bioluminescent waters and submerged relics.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Crystal Forest (1-2 energy)<br/>→ Signal Source (3-4 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• water_sampler (25 pts)<br/>• aquatic_artifact (35 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: wave_ripple (Epsilon ripples)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">🏛️ Ancient Ruins</div>
+                    <span class="area-risk risk-medium">Medium Risk</span>
+                    <div class="area-desc">Ruined structures with engraved symbols and faded tech.</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">→ Volcanic Plains (2 energy)<br/>→ Crystal Forest (2 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• symbol_decoder (45 pts)<br/>• engraved_tablet (40 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: symbol_cipher (Zeta symbols)</div>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-name">⚡ Signal Source</div>
+                    <span class="area-risk risk-very-high">Very High Risk</span>
+                    <div class="area-desc">The core mystery site with overwhelming signal strength. FINAL GOAL!</div>
+                    <div class="area-section">
+                        <div class="area-label">Connections:</div>
+                        <div class="area-items">← Underground Caverns (3-4 energy)<br/>← Hidden Lake (3-4 energy)</div>
+                    </div>
+                    <div class="area-section">
+                        <div class="area-label">Artifacts:</div>
+                        <div class="area-items">• master_artifact (50 pts)</div>
+                    </div>
+                    <div class="signal-list">📡 Signal: core_transmission (Omega core)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h2>📦 Complete Item Catalog</h2>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="item-name">signal_scanner</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 20</div>
+                    <div class="item-hint">Reduces decode energy cost from 2 to 1</div>
+                    <div class="item-aids">Aids: decode_signal</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">energy_crystal</div>
+                    <div class="item-type">⚡ Resource</div>
+                    <div class="item-value">Points: 15</div>
+                    <div class="item-hint">Use to restore 5 energy (one-time consumable)</div>
+                    <div class="item-aids">Aids: restore_energy</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">heat_resistant_probe</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 30</div>
+                    <div class="item-hint">Provides data about thermal patterns</div>
+                    <div class="item-aids">Aids: explore_high_risk</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">lava_sample</div>
+                    <div class="item-type">🧪 Sample</div>
+                    <div class="item-value">Points: 25</div>
+                    <div class="item-hint">Contains thermal data useful for pattern analysis</div>
+                    <div class="item-aids">Aids: analyze_clue</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">vibration_analyzer</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 35</div>
+                    <div class="item-hint">Reduces analyze cost to 0 in harmonic/crystal areas</div>
+                    <div class="item-aids">Aids: decode_signal</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">crystal_shard</div>
+                    <div class="item-type">🧪 Sample</div>
+                    <div class="item-value">Points: 20</div>
+                    <div class="item-hint">Crystalline sample with harmonic properties</div>
+                    <div class="item-aids">Aids: combine_artifacts</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">echo_locator</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 40</div>
+                    <div class="item-hint">Helps map underground connections</div>
+                    <div class="item-aids">Aids: navigate</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">fossil_remnant</div>
+                    <div class="item-type">🧪 Sample</div>
+                    <div class="item-value">Points: 30</div>
+                    <div class="item-hint">Ancient biological data for pattern recognition</div>
+                    <div class="item-aids">Aids: analyze_clue</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">water_sampler</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 25</div>
+                    <div class="item-hint">Useful for analyzing aquatic signals</div>
+                    <div class="item-aids">Aids: explore_medium_risk</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">aquatic_artifact</div>
+                    <div class="item-type">🏺 Relic</div>
+                    <div class="item-value">Points: 35</div>
+                    <div class="item-hint">Ancient tech from submerged ruins</div>
+                    <div class="item-aids">Aids: combine_artifacts</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">symbol_decoder</div>
+                    <div class="item-type">🔧 Tool</div>
+                    <div class="item-value">Points: 45</div>
+                    <div class="item-hint">Translates ancient cipher symbols</div>
+                    <div class="item-aids">Aids: decode_signal</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">engraved_tablet</div>
+                    <div class="item-type">🏺 Relic</div>
+                    <div class="item-value">Points: 40</div>
+                    <div class="item-hint">Ancient stone tablet with carved patterns</div>
+                    <div class="item-aids">Aids: combine_artifacts</div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="item-name">master_artifact</div>
+                    <div class="item-type">🏆 Master</div>
+                    <div class="item-value">Points: 50</div>
+                    <div class="item-hint">The ultimate prize at the Signal Source</div>
+                    <div class="item-aids">Aids: complete_mission</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="signal-combinations">
+            <h2>🔐 Valid Signal Combinations (Must Decode 3+ to Win)</h2>
+            <div class="combinations-grid">
+                <div class="combination-card">
+                    <div class="combination-title">① Alpha-Gamma Harmonic Link</div>
+                    <div class="combination-signals">basic_frequency + harmonic_sequence</div>
+                    <div class="combination-points">🎯 100 Points</div>
+                </div>
+
+                <div class="combination-card">
+                    <div class="combination-title">② Beta-Delta Thermal Echo</div>
+                    <div class="combination-signals">interference_pattern + echo_code</div>
+                    <div class="combination-points">🎯 120 Points</div>
+                </div>
+
+                <div class="combination-card">
+                    <div class="combination-title">③ Epsilon-Zeta Ancient Code</div>
+                    <div class="combination-signals">wave_ripple + symbol_cipher</div>
+                    <div class="combination-points">🎯 150 Points</div>
+                </div>
+
+                <div class="combination-card">
+                    <div class="combination-title">④ Alpha-Beta Baseline</div>
+                    <div class="combination-signals">basic_frequency + interference_pattern</div>
+                    <div class="combination-points">🎯 90 Points</div>
+                </div>
+
+                <div class="combination-card">
+                    <div class="combination-title">⑤ Gamma-Epsilon Resonance</div>
+                    <div class="combination-signals">harmonic_sequence + wave_ripple</div>
+                    <div class="combination-points">🎯 110 Points</div>
+                </div>
+
+                <div class="combination-card">
+                    <div class="combination-title">⑥ Delta-Zeta Underground Cipher</div>
+                    <div class="combination-signals">echo_code + symbol_cipher</div>
+                    <div class="combination-points">🎯 130 Points</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.contentLoaded();
+    </script>
+</body>
+</html>

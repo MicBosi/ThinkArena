@@ -4,17 +4,8 @@ import chalk from 'chalk';
 import { Command } from 'commander';
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
-import {
-    createModel,
-    getHeaders,
-    getProviderOptions,
-    getExtraBody,
-    createCachedSystemMessage,
-    THINKING_BUDGETS,
-    displayConfig,
-    setProvider,
-    getModelName,
-} from './config.js';
+import { createModel, getProviderOptions, displayConfig, setModel, getModelName } from './model-utils.js';
+import { getModelConfigs } from './models.js';
 import { GameDefinition } from './interfaces.js';
 
 // Import all game definitions
@@ -97,40 +88,15 @@ function saveGameResult(
 }
 
 /**
- * Create streamText configuration with common settings
- */
-function createStreamConfig({
-    messages,
-    tools,
-    maxSteps,
-    thinkingBudget,
-}: {
-    messages: unknown[];
-    tools: Record<string, unknown>;
-    maxSteps: number;
-    thinkingBudget: number;
-}) {
-    const extraBody = getExtraBody();
-    const config: any = {
-        model: createModel(),
-        messages,
-        tools: Object.keys(tools).length > 0 ? tools : undefined,
-        stopWhen: stepCountIs(maxSteps),
-        headers: getHeaders(),
-        providerOptions: getProviderOptions(thinkingBudget),
-        ...(extraBody && { extraBody }),
-    };
-
-    return config;
-}
-
-/**
  * Build messages array from prompts
  */
-function buildMessages(systemPrompt: string | null, userPrompt: string) {
-    const messages: unknown[] = [];
+function buildMessages(systemPrompt: string | null, userPrompt: string): any[] {
+    const messages: any[] = [];
     if (systemPrompt) {
-        messages.push(createCachedSystemMessage(systemPrompt));
+        messages.push({
+            role: 'system',
+            content: systemPrompt,
+        });
     }
     if (userPrompt) {
         messages.push({
@@ -139,16 +105,6 @@ function buildMessages(systemPrompt: string | null, userPrompt: string) {
         });
     }
     return messages;
-}
-
-/**
- * Resolve prompt (can be string or function)
- */
-function resolvePrompt(prompt: string | ((state: unknown) => string) | null): string | null {
-    if (typeof prompt === 'function') {
-        return prompt({});
-    }
-    return prompt;
 }
 
 /**
@@ -180,17 +136,8 @@ function extractTextContent(text: unknown): string {
     return '';
 }
 
-/**
- * Create step finish handler
- */
 function createStepFinishHandler() {
-    // let stepCounter = 0;
-
     return (event: any) => {
-        // stepCounter++;
-
-        // const stepLabel = `[STEP ${stepCounter}]`;
-
         console.log(chalk.blue('\n' + '─'.repeat(70)));
         // console.log(chalk.blue(stepLabel));
         // console.log(chalk.blue('─'.repeat(70)));
@@ -218,30 +165,20 @@ function createStepFinishHandler() {
  * Execute a single game playthrough
  */
 async function executePlaythrough({ gameDefinition }: { gameDefinition: GameDefinition }) {
-    const {
-        systemPrompt: rawSystemPrompt = null,
-        userPrompt: rawUserPrompt,
-        tools = {},
-        maxSteps = 15,
-    } = gameDefinition;
+    const { systemPrompt: rawSystemPrompt = null, userPrompt: rawUserPrompt, tools = {}, maxSteps } = gameDefinition;
 
-    const thinkingBudget = THINKING_BUDGETS.extended;
+    // Build messages
+    const messages = buildMessages(rawSystemPrompt, rawUserPrompt || '');
 
-    // Resolve prompts
-    const resolvedSystemPrompt = resolvePrompt(rawSystemPrompt);
-    const resolvedUserPrompt = resolvePrompt(rawUserPrompt);
-
-    // Build messages and config
-    const messages = buildMessages(resolvedSystemPrompt, resolvedUserPrompt || '');
-    const config = createStreamConfig({
+    // Create config inline
+    const config: any = {
+        model: createModel(),
         messages,
-        tools,
-        maxSteps,
-        thinkingBudget,
-    });
-
-    // Create step finish handler
-    config.onStepFinish = createStepFinishHandler();
+        tools: Object.keys(tools).length > 0 ? tools : undefined,
+        stopWhen: stepCountIs(maxSteps),
+        providerOptions: getProviderOptions(),
+        onStepFinish: createStepFinishHandler(),
+    };
 
     // Execute stream
     const stream = streamText(config);
@@ -279,28 +216,26 @@ async function playGame(
 }> {
     const startTime = Date.now(); // Track start time
 
-    const { name, systemPrompt, userPrompt } = gameDefinition;
+    const { name } = gameDefinition;
 
     // Display header
-    console.log(`\n🎮 ${name}`);
-    console.log('='.repeat(70));
+    console.log(chalk.bold(`\n🎮 ${name}\n`));
+    // console.log('='.repeat(70));
     displayConfig();
 
-    // Resolve prompts
-    const resolvedSystemPrompt = resolvePrompt(systemPrompt);
-    const resolvedUserPrompt = resolvePrompt(userPrompt);
-
+    /*
     // Display prompts
-    if (resolvedSystemPrompt) {
+    if (systemPrompt) {
         console.log('📝 System Prompt:');
-        console.log(resolvedSystemPrompt);
+        console.log(systemPrompt);
         console.log('\n' + '-'.repeat(70));
     }
 
     console.log('\n👤 User Request:');
-    console.log(resolvedUserPrompt);
+    console.log(userPrompt);
     console.log('\n' + '='.repeat(70));
     console.log('\n🔄 Starting game with interleaved thinking...\n');
+    */
 
     try {
         // Execute playthrough
@@ -371,44 +306,28 @@ async function playGame(
 if (import.meta.url === `file://${process.argv[1]}`) {
     const program = new Command();
 
+    // Get list of available models
+    const availableModels = Object.keys(getModelConfigs());
+    const modelList = availableModels.join(', ');
+
     program
         .name('play')
         .description('Play AI thinking games')
-        .argument('[game-name]', 'name of the game to play', 'hello')
-        .option('--haiku', 'use Claude Haiku 4.5')
-        .option('--sonnet', 'use Claude Sonnet 4.5')
-        .option('--xai', 'use xAI Grok (grok-code-fast-1)')
-        .option('--or-m2', 'use OpenRouter MiniMax M2')
-        .option('--or-kk2', 'use OpenRouter Kimi K2 Thinking')
-        .option('--or-haiku', 'use OpenRouter Claude Haiku 4.5')
-        .option('--m2', 'use MiniMax M2 via Anthropic-compatible API')
-        .action(async (gameName: string, options: any) => {
-            // Validate that exactly one provider option is selected
-            const providerOptions = ['haiku', 'sonnet', 'xai', 'orM2', 'orHaiku', 'orKk2', 'm2'];
-            const selectedProviders = providerOptions.filter((option) => options[option]);
-
-            if (selectedProviders.length !== 1) {
-                console.error(
-                    '\n❌ ERROR: You must specify exactly one model provider using one of: --haiku, --sonnet, --xai, --or-m2, --or-kk2, --or-haiku, --m2'
-                );
-                program.help();
-                return;
+        .argument('[game-name]', 'name of the game to play', 'decoder')
+        .requiredOption('-m, --model <model-id>', `Model to use. Available: ${modelList}`, 'XAI_GROK_4_FAST')
+        .action(async (gameName: string, options: { model: string }) => {
+            // Validate model ID
+            const modelId = options.model;
+            if (!availableModels.includes(modelId)) {
+                console.error(`\n❌ ERROR: Unknown model "${modelId}"`);
+                console.error(`\n📚 Available models: ${modelList}`);
+                process.exit(1);
             }
 
-            // Set provider based on selected option
-            const providerMap: Record<string, string> = {
-                haiku: 'haiku',
-                sonnet: 'sonnet',
-                xai: 'xai',
-                orM2: 'orM2',
-                orKk2: 'orKk2',
-                orHaiku: 'orHaiku',
-                m2: 'm2',
-            };
+            // Set the model (cast to ModelId after validation)
+            setModel(modelId as any);
 
-            const selectedOption = selectedProviders[0];
-            setProvider(providerMap[selectedOption]);
-
+            // Validate game name
             if (!GAMES[gameName]) {
                 console.error(`\n❌ Unknown game: "${gameName}"`);
                 console.error('\n📚 Available games:');

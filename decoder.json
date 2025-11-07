@@ -121,6 +121,22 @@
       "completed": true,
       "toolCalls": 28,
       "timestamp": "2025-11-06T18:06:52.803Z"
+    },
+    {
+      "steps": 13,
+      "score": 1525,
+      "time": 38,
+      "completed": true,
+      "toolCalls": 21,
+      "timestamp": "2025-11-07T14:38:41.985Z"
+    },
+    {
+      "steps": 16,
+      "score": 2075,
+      "time": 20,
+      "completed": true,
+      "toolCalls": 19,
+      "timestamp": "2025-11-07T15:06:55.546Z"
     }
   ],
   "MiniMax-M2": [
@@ -179,6 +195,62 @@
       "completed": true,
       "toolCalls": 27,
       "timestamp": "2025-11-06T12:05:56.151Z"
+    },
+    {
+      "steps": 29,
+      "score": 1850,
+      "time": 113.5,
+      "completed": true,
+      "toolCalls": 34,
+      "timestamp": "2025-11-07T10:04:45.330Z"
+    },
+    {
+      "steps": 25,
+      "score": 2000,
+      "time": 118.2,
+      "completed": true,
+      "toolCalls": 28,
+      "timestamp": "2025-11-07T10:06:54.609Z"
+    },
+    {
+      "steps": 18,
+      "score": 1870,
+      "time": 90,
+      "completed": true,
+      "toolCalls": 30,
+      "timestamp": "2025-11-07T10:10:33.219Z"
+    },
+    {
+      "steps": 25,
+      "score": 1930,
+      "time": 98.8,
+      "completed": true,
+      "toolCalls": 26,
+      "timestamp": "2025-11-07T10:12:12.309Z"
+    },
+    {
+      "steps": 20,
+      "score": 1270,
+      "time": 127.1,
+      "completed": true,
+      "toolCalls": 24,
+      "timestamp": "2025-11-07T10:14:19.733Z"
+    },
+    {
+      "steps": 28,
+      "score": 1570,
+      "time": 110.4,
+      "completed": true,
+      "toolCalls": 29,
+      "timestamp": "2025-11-07T10:16:10.484Z"
+    },
+    {
+      "steps": 27,
+      "score": 1255,
+      "time": 116.7,
+      "completed": false,
+      "toolCalls": 35,
+      "timestamp": "2025-11-07T10:18:07.533Z"
     }
   ],
   "claude-haiku-4-5": [
@@ -239,6 +311,90 @@
       "completed": true,
       "toolCalls": 25,
       "timestamp": "2025-11-06T12:12:39.905Z"
+    }
+  ],
+  "moonshotai/kimi-k2-thinking": [
+    {
+      "steps": 18,
+      "score": 1855,
+      "time": 250.5,
+      "completed": true,
+      "toolCalls": 28,
+      "timestamp": "2025-11-07T11:45:08.899Z"
+    },
+    {
+      "steps": 24,
+      "score": 1175,
+      "time": 230.2,
+      "completed": false,
+      "toolCalls": 33,
+      "timestamp": "2025-11-07T12:21:14.875Z"
+    },
+    {
+      "steps": 26,
+      "score": 1430,
+      "time": 230.5,
+      "completed": true,
+      "toolCalls": 30,
+      "timestamp": "2025-11-07T12:25:05.666Z"
+    },
+    {
+      "steps": 22,
+      "score": 1885,
+      "time": 216.5,
+      "completed": true,
+      "toolCalls": 31,
+      "timestamp": "2025-11-07T12:38:01.737Z"
+    },
+    {
+      "steps": 23,
+      "score": 1530,
+      "time": 218.4,
+      "completed": false,
+      "toolCalls": 34,
+      "timestamp": "2025-11-07T12:41:40.470Z"
+    },
+    {
+      "steps": 23,
+      "score": 1250,
+      "time": 253,
+      "completed": false,
+      "toolCalls": 32,
+      "timestamp": "2025-11-07T12:45:53.771Z"
+    },
+    {
+      "steps": 25,
+      "score": 1440,
+      "time": 215.9,
+      "completed": true,
+      "toolCalls": 29,
+      "timestamp": "2025-11-07T14:57:23.402Z"
+    },
+    {
+      "steps": 21,
+      "score": 1350,
+      "time": 309.9,
+      "completed": true,
+      "toolCalls": 27,
+      "timestamp": "2025-11-07T15:02:45.339Z"
+    },
+    {
+      "steps": 19,
+      "score": 1265,
+      "time": 243.8,
+      "completed": true,
+      "toolCalls": 21,
+      "timestamp": "2025-11-07T15:14:11.475Z"
+    }
+  ],
+  "minimax/minimax-m2": [
+    {
+      "steps": 2,
+      "score": 300,
+      "time": 4.3,
+      "completed": false,
+      "toolCalls": 1,
+      "timestamp": "2025-11-07T14:46:34.191Z"
     }
   ]
 }

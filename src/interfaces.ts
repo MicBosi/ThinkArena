@@ -7,8 +7,8 @@ export interface Game {
 
 export interface GameDefinition {
     name: string;
-    systemPrompt?: string | ((state: unknown) => string) | null;
-    userPrompt: string | ((state: unknown) => string);
+    systemPrompt?: string | null;
+    userPrompt: string;
     tools?: Record<string, unknown>;
     maxSteps?: number;
     game: Game;
